@@ -22,11 +22,12 @@ class GamesController extends Controller
             return ModelsGame::where('slug', $slug)
                 ->with([
                     'cover', 'platforms', 'similar_games.cover', 'similar_games.platforms', 'similar_games', 'genres', 'involved_companies.company', 'screenshots', 'videos', 'websites'
-                ])
+                    ,'release_dates','player_perspectives'
+                    ])
                 ->firstOrFail();
         });
         $game = $this->formatForView($gameUnFormat);
-        // dump($game);
+        dump($game);
         return view('show', compact('game'));
     }
 
@@ -43,9 +44,12 @@ class GamesController extends Controller
             'gameplay' => collect($game['videos'])->filter(function ($video) {
                 return str_contains(Str::lower($video['name']), 'gameplay');
             })->first()['video_id'] ?? null,
+            'player_perspectives' => '· '.collect($game['player_perspectives'])->pluck('name')->implode(', ') ?? null,
 
             'genres' => collect($game['genres'])->pluck('name')->implode(', '),
             'platforms' => collect($game['platforms'])->pluck('abbreviation')->implode(', '),
+            'relese' => collect($game['release_dates'])->last()['human'] ?? null,
+
 
             'memberRating' => $game['rating'] ? round($game['rating']) : '0',
             'criticRating' => $game['aggregated_rating'] ? round($game['aggregated_rating']) : '0',

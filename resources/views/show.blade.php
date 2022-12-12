@@ -13,6 +13,15 @@
                     <span>{{ $game['platforms'][0]['name'] ?? null }}</span>
                     &middot;
                     {{ $game['platforms'] }}
+                    <br>
+                    @if (isset($game['relese']))
+                        <span>{{ $game['relese'] }}</span>
+                    @endif
+
+                    @if (isset($game['player_perspectives']))
+                        <span> {{ $game['player_perspectives'] }}</span>
+                    @endif
+
                     {{-- get last comany --}}
                 </div>
 
@@ -192,19 +201,19 @@
             <h2 class="text-blue-500 uppercase tracking-wide font-semibold">Images</h2>
             <div class="grid gird-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mt-8">
                 @if (isset($game['screenshots']))
-                @foreach ($game['screenshots'] as $screenshot)
-                    <div>
-                        <a href="#"
-                            @click.prevent="
+                    @foreach ($game['screenshots'] as $screenshot)
+                        <div>
+                            <a href="#"
+                                @click.prevent="
                                 isImageModalVisible = true
                                 image='{{ Str::replaceFirst('thumb', 'screenshot_big', $screenshot['url']) }}'
                             ">
-                            <img src="{{ Str::replaceFirst('thumb', 'screenshot_big', $screenshot['url']) }}"
-                                loading="lazy" alt="screenshot"
-                                class="rounded-lg hover:opacity-75 transition ease-in-out duration-150 shadow-lg">
-                        </a>
-                    </div>
-                @endforeach
+                                <img src="{{ Str::replaceFirst('thumb', 'screenshot_big', $screenshot['url']) }}"
+                                    loading="lazy" alt="screenshot"
+                                    class="rounded-lg hover:opacity-75 transition ease-in-out duration-150 shadow-lg">
+                            </a>
+                        </div>
+                    @endforeach
                 @endif
             </div>
 
